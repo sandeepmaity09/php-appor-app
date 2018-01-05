@@ -16,8 +16,8 @@ class UsersRepo {
     }
 
     getAllUsers(){
-        return User.findAll({attributes:['name','pass']});
-        // return User.findAll();
+        // return User.findAll({attributes:['name','pass']});
+        return User.findAll();
         
     }
 
