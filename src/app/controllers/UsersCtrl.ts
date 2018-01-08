@@ -3,6 +3,7 @@ import { apiErrorHandler } from '../../handlers/errorHandler';
 import UsersRepo from '../repositories/UsersRepo';
 import { IUserModel, UserModel } from '../models/userModel';
 import { IUserResponse, UserResponse } from '../models/response/userResponse';
+import TokenAuth from '../auth/tokenAuth';
 
 export default class UsersRoutes {
 
@@ -37,21 +38,30 @@ export default class UsersRoutes {
                         "message": "no user found"
                     });
                 }
-                let user: IUserResponse = new UserResponse(result[0].dataValues.uid,result[0].dataValues.name,result[0].dataValues.pass);
+                let user: IUserResponse = new UserResponse(result[0].dataValues.uid, result[0].dataValues.name, result[0].dataValues.pass);
                 let successflag = user.validPassword(pass);
-                if (successflag) {
-                    return res.json(user);
-                } else {
+                if (!successflag) {
+
                     return res.json({
                         "message": "invalid password"
                     });
+                    // return res.json(user);
+                } else {
+                    const payload = { user: user.name }
+                    let tokenAuth = new TokenAuth();
+                    var token = tokenAuth.tokenGenerator(payload);
+                    res.json({
+                        success: true,
+                        message: 'Enjoy your token!',
+                        token: token
+                    })
                 }
             })
             .catch((err) => {
                 console.log(err);
                 return res.json({
                     status: res.status,
-                    err:err
+                    err: err
                 });
             })
     }
@@ -67,8 +77,8 @@ export default class UsersRoutes {
             .catch((err) => {
                 console.log('failed')
                 res.json({
-                    status:res.status,
-                    message:'Unable to fetch all users'
+                    status: res.status,
+                    message: 'Unable to fetch all users'
                 })
             })
     }
