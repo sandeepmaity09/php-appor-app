@@ -9,6 +9,7 @@ import * as fs from "fs";
 import { WriteStream } from "fs";
 
 import Routes from "../app/router/routes";
+import { jsonErrorHandler } from "../handlers/errorHandler"
 
 export default class Server {
 
@@ -48,6 +49,7 @@ export default class Server {
         app.use(helmet());
         // app.use(morgan('dev'))
         app.use(cors());
+        app.use(jsonErrorHandler);
         // this hides the error and log the error so not use this in develpment mode
         // app.use(unCoughtErrorHandler);  
     }

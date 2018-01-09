@@ -8,11 +8,20 @@ export default class Routes {
     usersCtrl = new UserRoutes();
 
     constructor(app: Application) {
-        app.route('/api/signup').post(this.usersCtrl.signup);
-        // app.use(TokenAuth.tokenMatcher);
-        app.route('/api/login').post(this.usersCtrl.login);
-        app.route('/api/forgot').post(this.usersCtrl.forgotPassword);
-        app.use('/api',TokenAuth.tokenMatcher);
-        app.route('/api/allusers').get(this.usersCtrl.getAllUsers);
+
+        const baseAPI = process.env.BASE_API;
+        const authenticatedAPI = process.env.BASE_API + '/res';
+
+        // User Management Routes
+        app.route(baseAPI+'/signup').post(this.usersCtrl.signup);
+        app.route(baseAPI+'/login').post(this.usersCtrl.login);
+        app.route(baseAPI+'/forgot').post(this.usersCtrl.forgotPassword);
+        // app.route(baseAPI+'/reset').post();
+
+        // Using Token Authenticator as a middleware
+        app.use(authenticatedAPI,TokenAuth.tokenMatcher);
+
+        // If token authenticated then only provides this routes access
+        app.route(authenticatedAPI+'/allusers').get(this.usersCtrl.getAllUsers);
     }
 }

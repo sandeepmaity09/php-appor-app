@@ -10,16 +10,13 @@ export default class TokenAuth {
         if (token) {
             jsonwebtoken.verify(token, secret, function (error, decoded) {
                 if (error) {
-                    console.log(error);
-                    console.log(token);
-                    console.log(secret);
-                    console.log(expire);
                     return res.json({
                         success: false,
                         message: 'Failed to Authenticate token'
                     })
                 } else {
                     req.decoded = decoded;
+                    console.log('this is from the decoded request',req.decoded);
                     next();
                 }
             })
@@ -33,14 +30,7 @@ export default class TokenAuth {
     }
 
     public tokenGenerator(payload) {
-        return jsonwebtoken.sign(payload, secret, { expiresIn: expire });
+        console.log(payload);
+        return jsonwebtoken.sign(payload, secret, { expiresIn: "24h" });
     }
-
-    // private decoder(error,decode){
-    //     if(error){
-    //         return res.json({
-
-    //         })
-    //     }
-    // }
 }

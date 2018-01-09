@@ -1,13 +1,10 @@
 import { User } from '../../db/dbmodels/User'
-import { LoginUser } from '../../db/dbmodels/LoginUser';
-import { SignupUser } from '../../db/dbmodels/SignupUser'
-import { ForgotPassword } from '../../db/dbmodels/ForgotPassword';
 
 class UsersRepo {
     constructor() {}
 
     login(name){
-        return User.findAll({where:{'name':name}});
+        return User.findOne({where:{'name':name}});
     }
 
     signup(props:any){
@@ -22,7 +19,7 @@ class UsersRepo {
     }
 
     forgotPassword(name){
-        return User.findAll({where:{'name':name}});
+        return User.findOne({where:{'name':name}});
     }
 }
 
