@@ -4,14 +4,15 @@ export default class userValidator {
     constructor() { }
 
     public static signupUserValidator(req: Request): boolean | object {
-        if (!req.body.uid || !req.body.name || !req.body.mail) {
-            if (!req.body.uid) {
-                return {
-                    success: false,
-                    message: 'Uid Not Provided'
-                }
-            }
-            else if (!req.body.name) {
+        if (/*!req.body.uid ||*/ !req.body.name || !req.body.mail ) {
+            // if (!req.body.uid) {
+            //     return {
+            //         success: false,
+            //         message: 'Uid Not Provided'
+            //     }
+            // }
+            // else 
+            if (!req.body.name) {
                 return {
                     success: false,
                     message: 'Username Not Provided'
